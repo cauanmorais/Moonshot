@@ -30,12 +30,20 @@ struct ContentView: View {
             .background(.darkBackground)
             .preferredColorScheme(.dark)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItemGroup(placement: .topBarTrailing) {
                     Button {
-                        isOnListMode.toggle()
+                        isOnListMode = true
                     } label: {
-                        Image(systemName: isOnListMode ? "square.grid.2x2" : "list.bullet")
+                        Image(systemName:"list.bullet")
                     }
+                    
+                    
+                    Button {
+                        isOnListMode = false
+                    } label: {
+                        Image(systemName:"square.grid.2x2")
+                    }
+
                 }
             }
         }
@@ -79,7 +87,7 @@ struct MissionGridView: View {
                             .stroke(.lightBackground)
                     }
                 }
-                .buttonStyle(.plain) // Add this!
+                .buttonStyle(.plain)
             }
         }
         .padding([.horizontal, .bottom])
@@ -123,7 +131,7 @@ struct MissionListView: View {
                     }
                 }
                 .padding(.horizontal)
-                .buttonStyle(.plain) // Add this!
+                .buttonStyle(.plain)
             }
         }
     }
