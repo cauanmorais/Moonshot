@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct Mission: Codable, Identifiable {
-    struct crewRole: Codable {
+struct Mission: Codable, Identifiable, Hashable {
+    struct crewRole: Codable, Hashable {
         let name: String
         let role: String
     }

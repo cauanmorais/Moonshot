@@ -12,6 +12,8 @@ struct MissionView: View {
     let crew: [CrewMember]
     
     init(mission: Mission, astronauts: [String: Astronaut]) {
+        
+        print("Hey, you created a Mission View :)")
         self.mission = mission
         
         self.crew = mission.crew.map { member in

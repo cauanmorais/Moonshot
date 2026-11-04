@@ -10,13 +10,14 @@ struct ContentView: View {
     private let astronauts: [String: Astronaut] = Bundle.main.decode("astronauts.json")
     private let missions: [Mission] = Bundle.main.decode("missions.json")
     @State private var isOnListMode = true
+    @State private var path = NavigationPath()
     
     let columns = [
         GridItem(.adaptive(minimum: 150))
     ]
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             ScrollView {
                 if isOnListMode {
                     MissionListView(missions: missions, astronauts: astronauts)
@@ -27,23 +28,19 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("Moonshot")
+            .navigationDestination(for: Mission.self, destination: { mission in
+                MissionView(mission: mission, astronauts: astronauts)
+            })
             .background(.darkBackground)
             .preferredColorScheme(.dark)
             .toolbar {
-                ToolbarItemGroup(placement: .topBarTrailing) {
+                ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        isOnListMode = true
+                        isOnListMode.toggle()
                     } label: {
-                        Image(systemName:"list.bullet")
+                        Image(systemName: isOnListMode ? "square.grid.2x2" : "list.bullet")
+                            .foregroundStyle(.white)
                     }
-                    
-                    
-                    Button {
-                        isOnListMode = false
-                    } label: {
-                        Image(systemName:"square.grid.2x2")
-                    }
-
                 }
             }
         }
@@ -59,9 +56,7 @@ struct MissionGridView: View {
     var body: some View {
         LazyVGrid(columns: columns) {
             ForEach(missions) { mission in
-                NavigationLink {
-                    MissionView(mission: mission, astronauts: astronauts)
-                } label: {
+                NavigationLink(value: mission) {
                     VStack {
                         Image(mission.image)
                             .resizable()
@@ -102,9 +97,7 @@ struct MissionListView: View {
     var body: some View {
         LazyVStack(spacing: 10) {
             ForEach(missions) { mission in
-                NavigationLink {
-                    MissionView(mission: mission, astronauts: astronauts)
-                } label: {
+                NavigationLink(value: mission) {
                     HStack {
                         Image(mission.image)
                             .resizable()
